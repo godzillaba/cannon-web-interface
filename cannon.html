@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cannon Web Interface</title>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css" media="screen,projection" />
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link type="text/css" rel="stylesheet" href="cannon.css">
+
+</head>
+
+<body class="grey darken-4">
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+    <script type="text/javascript" src="cannon.js"></script>
+    <main>
+
+
+        <div id="feed" class="grey darken-3">
+        </div>
+
+
+
+        <div id="userInputOutput">
+
+
+
+            <div id='variables' class="grey darken-3">
+
+                <div class="row">
+                    <div class="col s6">
+                        <p><span class='calculatedLabel'>Pressure:</span> <br><span id='pressure' class='givenValue'>57</span><span id='pressureUnits'>psi</span></p>
+                    </div>
+                    <div class="col s6">
+                        <p><span class='calculatedLabel'>Y &theta;:</span> <br><span id='theta' class='givenValue'>45</span>&deg;</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s6">
+                        <p><span class='calculatedLabel'>Predicted Force:</span> <br><span id='force'>28</span><span id='forceUnits'>N</span></p>
+                    </div>
+                    <div class="col s6">
+                        <p><span class='calculatedLabel'>Predicted Velocity:</span> <br><span id='velocity'>22</span><span id='pressureUnits'>m/s</span></p>
+                    </div>
+                    
+
+                </div>
+
+                <div class="row">
+                    <!-- <div class="input-field col s6">
+                        <input value="45" id="theta" type="text">
+                        <label for="theta">Y &theta;&deg;</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input value="40" id="predictedDistance" type="text">
+                        <label for="predictedDistance">Predicted Distance (m)</label>
+                    </div> -->
+                    <div class="col s6">
+                        <p><span class='calculatedLabel'>Predicted Air Time:</span> <br><span id='time'>4.3</span>s</p>
+                    </div>
+                    <div class="col s6">
+                        <p><span class='calculatedLabel'>Predicted &Delta;x:</span> <br><span id='predictedDistance'>54</span><span id='distanceUnits'>m</span></p>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div id='fire_reload'>
+                <div id='space' class="ui_btn">
+                    <a class='waves-effect waves-light btn-flat btn-large red'>
+                        FIRE
+                    </a>
+                </div>
+                <div id="r" class="ui_btn">
+                    <a class='waves-effect waves-light btn-flat btn-large blue'>
+                        <i class="material-icons left" style='margin-right:2px'>loop</i>RELOAD
+                    </a>
+                </div>
+            </div>
+
+            <div class="divider" style="width: 300px; margin-top:20px; margin-bottom:20px"></div>
+
+            <div id='arrows'>
+                <div id='up' class='arrow ui_btn' style="display: block">
+                    <a class='waves-effect waves-light btn-flat blue-grey lighten-1'>
+                        <i class="material-icons">keyboard_arrow_up</i>
+                    </a>
+                </div>
+
+                <div id='ldr'>
+                    <div class='arrow ui_btn' id='left'>
+                        <a class='waves-effect waves-light btn-flat blue-grey lighten-1'>
+                            <i class="material-icons">keyboard_arrow_left</i>
+                        </a>
+                    </div>
+                    <div class='arrow ui_btn' id='down'>
+                        <a class='waves-effect waves-light btn-flat blue-grey lighten-1'>
+                            <i class="material-icons">keyboard_arrow_down</i>
+                        </a>
+                    </div>
+                    <div class='arrow ui_btn' id='right'>
+                        <a class='waves-effect waves-light btn-flat blue-grey lighten-1'>
+                            <i class="material-icons">keyboard_arrow_right</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+
+</html>
