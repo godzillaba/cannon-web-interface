@@ -47,17 +47,33 @@
     color: white;
 }
 
-.ui_btn {
+/*.ui_btn {
     transition: opacity .04s linear;
     -moz-transition: opacity .04s linear;
     -webkit-transition: opacity .04s linear;
-}
+}*/
 
 .calculatedLabel {
     color: #9e9e9e;
 }
 
 
+#crossHairs_x {
+    height: 1px;
+    width: 10%;
+    border: 1px solid white;
+    position: absolute;
+    top: 50%;
+    left: 45%;
+}
+#crossHairs_y {
+    height: 16%;
+    width: 1px;
+    border: 1px solid white;
+    position: absolute;
+    top: 42%;
+    left: 50%;
+}
 
 /* label color */
 
