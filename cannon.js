@@ -85,8 +85,7 @@ var P = {
     "barrelLength": 0.910,
     "projectileMass": 0.10,
     "pressure": 50.0,
-    "theta": 37.8,
-    "force": 26
+    "theta": 37.8
 }
 
 
@@ -94,8 +93,9 @@ var calculatePhysics = function () {
     var returnData = new Object();
     
     // find force from pressure somehow (defining it in P for now...)
+    returnData.force = Math.round((.2105*P.pressure - .6571)*100) / 100
 
-    returnData.velocity = Math.round((Math.sqrt((2*P.barrelLength*P.force)/P.projectileMass)) * 100) / 100
+    returnData.velocity = Math.round((Math.sqrt((2*P.barrelLength*returnData.force)/P.projectileMass)) * 100) / 100
 
     returnData.airTime = Math.round((returnData.velocity * Math.sin(toRadians(P.theta)) / 4.9) * 100) / 100
 
@@ -104,9 +104,8 @@ var calculatePhysics = function () {
 
     $("#pressure").html(P.pressure)
     $("#theta").html(P.theta)
-    $("#force").html(P.force)
-
-
+    
+    $("#force").html(returnData.force)
     $("#velocity").html(returnData.velocity)
     $("#time").html(returnData.airTime)
     $("#predictedDistance").html(returnData.distance)
