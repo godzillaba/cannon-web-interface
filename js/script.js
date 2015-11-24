@@ -83,9 +83,9 @@ function toRadians (angle) {
 
 var P = {
     "barrelLength": 0.910,
-    "projectileMass": 0.10,
-    "pressure": 50.0,
-    "theta": 37.8
+    "projectileMass": 0.06,
+    "pressure": 120.0,
+    "theta": 45.0
 }
 
 
@@ -93,7 +93,7 @@ var calculatePhysics = function () {
     var returnData = new Object();
     
     // find force from pressure somehow (defining it in P for now...)
-    returnData.force = Math.round((.2105*P.pressure - .6571)*100) / 100
+    returnData.force = Math.round((.2005*P.pressure - .3479)*100) / 100
 
     returnData.velocity = Math.round((Math.sqrt((2*P.barrelLength*returnData.force)/P.projectileMass)) * 100) / 100
 

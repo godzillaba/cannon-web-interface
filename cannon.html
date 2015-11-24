@@ -9,7 +9,7 @@
     <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css" media="screen,projection" />
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link type="text/css" rel="stylesheet" href="cannon.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css">
 
 </head>
 
@@ -17,14 +17,13 @@
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
-    <script type="text/javascript" src="cannon.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
     <main>
 
 
         <div id="feed" class="grey darken-3">
-            <div id="crossHairs_x">
-            </div>
-            <div id='crossHairs_y'></div>
+            <div class='crossHairs' id="crossHairs_x"></div>
+            <div class='crossHairs' id='crossHairs_y'></div>
         </div>
 
 
@@ -46,10 +45,10 @@
 
                 <div class="row">
                     <div class="col s6">
-                        <p><span class='calculatedLabel'>Predicted Force:</span> <br><span id='force'>28</span><span id='forceUnits'>N</span></p>
+                        <p><span class='calculatedLabel'>Avg Force:</span> <br><span id='force'>28</span><span id='forceUnits'>N</span></p>
                     </div>
                     <div class="col s6">
-                        <p><span class='calculatedLabel'>Predicted Velocity:</span> <br><span id='velocity'>22</span><span id='pressureUnits'>m/s</span></p>
+                        <p><span class='calculatedLabel'>Velocity:</span> <br><span id='velocity'>22</span><span id='pressureUnits'>m/s</span></p>
                     </div>
                     
 
@@ -65,10 +64,10 @@
                         <label for="predictedDistance">Predicted Distance (m)</label>
                     </div> -->
                     <div class="col s6">
-                        <p><span class='calculatedLabel'>Predicted Air Time:</span> <br><span id='time'>4.3</span>s</p>
+                        <p><span class='calculatedLabel'>Air Time:</span> <br><span id='time'>4.3</span>s</p>
                     </div>
                     <div class="col s6">
-                        <p><span class='calculatedLabel'>Predicted &Delta;x:</span> <br><span id='predictedDistance'>54</span><span id='distanceUnits'>m</span></p>
+                        <p><span class='calculatedLabel'>&Delta;x:</span> <br><span id='predictedDistance'>54</span><span id='distanceUnits'>m</span></p>
                     </div>
                 </div>
 

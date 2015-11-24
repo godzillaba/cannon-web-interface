@@ -58,22 +58,28 @@
 }
 
 
+
+.crossHairs {
+    outline: 1px solid white;
+    background-color: black;
+    position: absolute;
+}
+
+
 #crossHairs_x {
     height: 1px;
     width: 10%;
-    border: 1px solid white;
-    position: absolute;
     top: 50%;
     left: 45%;
 }
 #crossHairs_y {
     height: 16%;
     width: 1px;
-    border: 1px solid white;
-    position: absolute;
     top: 42%;
     left: 50%;
 }
+
+
 
 /* label color */
 
