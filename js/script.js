@@ -1,38 +1,118 @@
+window.onload = function() {
+    
+    socket = new WebSocket("ws://" + window.location.hostname + ":9000");
+    socket.binaryType = "arraybuffer";
+    
+    socket.onopen = function() {
+        console.log("Connected!");
+        isopen = true;
+    }
+    
+    socket.onmessage = function(e) {
+        console.log("Text message received: " + e.data);
+    }
+    
+    socket.onclose = function(e) {
+        console.log("Connection closed.");
+        socket = null;
+        isopen = false;
+    }
+};
+
 
 var keyMap = {
     38: {
         "character": "up",
-        "pressed": false
+        "pressed": false,
+        "message": {
+            "command": "stepper",
+            "axis": "y",
+            "direction": 1
+        }
     },
     40: {
         "character": "down",
-        "pressed": false
+        "pressed": false,
+        "message": {
+            "command": "stepper",
+            "axis": "y",
+            "direction": -1
+        }
     },
     37: {
         "character": "left",
-        "pressed": false
+        "pressed": false,
+        "message": {
+            "command": "stepper",
+            "axis": "x",
+            "direction": -1
+        }
     },
     39: {
         "character": "right",
-        "pressed": false
+        "pressed": false,
+        "message": {
+            "command": "stepper",
+            "axis": "x",
+            "direction": 1
+        }
     },
     32: {
         "character": "space",
-        "pressed": false
+        "pressed": false,
+        "message": {
+            "command": "fire"
+        }
     },
     82: {
         "character": "r",
-        "pressed": false
+        "pressed": false,
+        "message": {
+            "command": "reload"
+        }
     }
 }
 
 
-var actionButtonPressed = function (arg) {
-    console.log(arg + " DOWN")
+var actionButtonPressed = function (key) {
+    
+    var msg = null
+    
+    switch (key.character) {
+        case "up":
+        case "down":
+        case "left":
+        case "right":
+            msg = key.message
+            msg.start = true
+            break;
+        
+        case "r":
+        case "space":
+            msg = key.message
+            break;
+
+    }
+    socket.send(JSON.stringify(msg))
 }
 
-var actionButtonReleased = function (arg) {
-    console.log(arg + " UP")
+var actionButtonReleased = function (key) {
+    
+    var msg = null
+    
+    switch (key.character) {
+        case "up":
+        case "down":
+        case "left":
+        case "right":
+            msg = key.message
+            msg.start = false
+            break;
+
+    }
+    if (msg){
+        socket.send(JSON.stringify(msg))
+    }
 }
 
 
@@ -41,7 +121,7 @@ $("html").keydown(function(e) {
         var key = keyMap[e.keyCode]
 
         if (!key.pressed) {
-            actionButtonPressed(key.character)
+            actionButtonPressed(key)
         }
 
         key.pressed = true
@@ -64,7 +144,7 @@ $("html").keyup(function(e) {
 
         key.pressed = false
 
-        actionButtonReleased(key.character)
+        actionButtonReleased(key)
 
         $("#" + key.character).css("opacity", 1)
     } 
