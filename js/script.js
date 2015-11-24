@@ -1,3 +1,5 @@
+// defining websocket behavior
+
 window.onload = function() {
     
     socket = new WebSocket("ws://" + window.location.hostname + ":9000");
@@ -19,6 +21,11 @@ window.onload = function() {
     }
 };
 
+// end defining websocket behavior
+
+///////////////////////////
+
+// key map
 
 var keyMap = {
     38: {
@@ -73,6 +80,11 @@ var keyMap = {
     }
 }
 
+// end key map
+
+///////////////////////////
+
+// define button press and release functions
 
 var actionButtonPressed = function (key) {
     
@@ -115,46 +127,11 @@ var actionButtonReleased = function (key) {
     }
 }
 
+// end define button press and release functions
 
-$("html").keydown(function(e) {
-    try {
-        var key = keyMap[e.keyCode]
+///////////////////////////
 
-        if (!key.pressed) {
-            actionButtonPressed(key)
-        }
-
-        key.pressed = true
-
-
-        $("#" + key.character).css("opacity", .5)
-    } 
-    catch (E) { 
-        if (E instanceof TypeError) {}
-        else {
-            throw E
-        }
-    }
-
-})
-
-$("html").keyup(function(e) {
-    try {
-        var key = keyMap[e.keyCode]
-
-        key.pressed = false
-
-        actionButtonReleased(key)
-
-        $("#" + key.character).css("opacity", 1)
-    } 
-    catch (E) { 
-        if (E instanceof TypeError) {}
-        else {
-            throw E
-        }
-    }
-})
+// math
 
 function toRadians (angle) {
   return angle * (Math.PI / 180);
@@ -198,6 +175,53 @@ $(window).load(function(){
     calculatePhysics()
 })
 
+// end math
+
+
+///////////////////////////
+
+
+// button press and release capturing
+
+$("html").keydown(function(e) {
+    try {
+        var key = keyMap[e.keyCode]
+
+        if (!key.pressed) {
+            actionButtonPressed(key)
+        }
+
+        key.pressed = true
+
+
+        $("#" + key.character).css("opacity", .5)
+    } 
+    catch (E) { 
+        if (E instanceof TypeError) {}
+        else {
+            throw E
+        }
+    }
+
+})
+
+$("html").keyup(function(e) {
+    try {
+        var key = keyMap[e.keyCode]
+
+        key.pressed = false
+
+        actionButtonReleased(key)
+
+        $("#" + key.character).css("opacity", 1)
+    } 
+    catch (E) { 
+        if (E instanceof TypeError) {}
+        else {
+            throw E
+        }
+    }
+})
 
 $(window).load(function(){
     var btns = $(".ui_btn")
@@ -211,7 +235,12 @@ $(window).load(function(){
     })
 })
 
+// end button press and release capturing
 
+
+///////////////////////////
+
+// positioning miscellaneous elements
 $(window).load(function() {
     $("#up").css("margin-left", $("#down").position().left + 5);
     var f = $("#feed")
@@ -221,5 +250,5 @@ $(window).load(function() {
     f.height($(window).height() - f.offset().top * 2)
 })
 
-
+// end positioning
 
