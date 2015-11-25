@@ -150,7 +150,7 @@ var calculatePhysics = function () {
     var returnData = new Object();
     
     // find force from pressure somehow (defining it in P for now...)
-    returnData.force = Math.round((.2005*P.pressure - .3479)*100) / 100
+    returnData.force = Math.round((0.2005*P.pressure - 0.3479)*100) / 100
 
     returnData.velocity = Math.round((Math.sqrt((2*P.barrelLength*returnData.force)/P.projectileMass)) * 100) / 100
 
@@ -194,7 +194,7 @@ $("html").keydown(function(e) {
         key.pressed = true
 
 
-        $("#" + key.character).css("opacity", .5)
+        $("#" + key.character).css("opacity", 0.5)
     } 
     catch (E) { 
         if (E instanceof TypeError) {}
@@ -227,11 +227,11 @@ $(window).load(function(){
     var btns = $(".ui_btn")
 
     btns.mousedown(function(){
-        actionButtonPressed($(this).prop("id"))
+        actionButtonPressed(keyMap[$(this).data("key")])
     });
 
     btns.mouseup(function(){
-        actionButtonReleased($(this).prop("id"))
+        actionButtonReleased(keyMap[$(this).data("key")])
     })
 })
 
