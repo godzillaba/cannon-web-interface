@@ -1,6 +1,7 @@
-
-from autobahn.twisted.websocket import WebSocketServerProtocol, WebSocketServerFactory
-import json, time, threading
+import tornado.ioloop
+import tornado.web
+import tornado.websocket
+import os, json, time, threading
 
 
 
@@ -37,20 +38,18 @@ def load():
     print "Reloading cannon!!!"
 
 
-class MyServerProtocol(WebSocketServerProtocol):
 
-    def onConnect(self, request):
-        print("Client connecting: {0}".format(request.peer))
+class WebSocket(tornado.websocket.WebSocketHandler):
+    def open(self):
+        print("WebSocket opened")
 
-    def onOpen(self):
-        print("WebSocket connection open.")
+    def on_close(self):
+        print("WebSocket closed")
+    
 
-    def onClose(self, wasClean, code, reason):
-        print("WebSocket connection closed: {0}".format(reason))
+    def on_message(self, message):
 
-    def onMessage(self, payload, isBinary):
-
-        commandObject = json.loads(payload)
+        commandObject = json.loads(message)
 
         
         command = commandObject['command']
@@ -84,22 +83,17 @@ class MyServerProtocol(WebSocketServerProtocol):
 
 
         # echo back message verbatim
-        self.sendMessage(payload)
+        self.write_message(message)
 
 
 
-if __name__ == '__main__':
 
-    import sys
-
-    from twisted.python import log
-    from twisted.internet import reactor
-
-    log.startLogging(sys.stdout)
-
-    factory = WebSocketServerFactory(u"ws://127.0.0.1:9000", debug=False)
-    factory.protocol = MyServerProtocol
-    # factory.setProtocolOptions(maxConnections=2)
-
-    reactor.listenTCP(9000, factory)
-    reactor.run()
+if __name__ == "__main__":
+    
+    handlers = [
+        (r"/static/(.*)", tornado.web.StaticFileHandler, {'path': "./"}),
+        (r"/websocket", WebSocket)
+    ]
+    application = tornado.web.Application(handlers)
+    application.listen(8888)
+    tornado.ioloop.IOLoop.current().start()

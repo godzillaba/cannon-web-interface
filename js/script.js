@@ -2,7 +2,9 @@
 
 window.onload = function() {
     
-    socket = new WebSocket("ws://" + window.location.hostname + ":9000");
+    //socket = new WebSocket("ws://" + window.location.hostname + ":9000");
+    socket = new WebSocket("ws://" + window.location.hostname + ":8888/websocket");
+
     socket.binaryType = "arraybuffer";
     
     socket.onopen = function() {
