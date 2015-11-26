@@ -9,11 +9,14 @@ threads = {
     "steppers": {
         "x": {
             "alive": False,
-            "threadObject": None
+            "threadObject": None,
+            "currentDirection": None
         },
         "y": {
             "alive": False,
-            "threadObject": None
+            "threadObject": None,
+            "currentDirection": None
+
         }
     }
 }
@@ -63,16 +66,20 @@ class WebSocket(tornado.websocket.WebSocketHandler):
                 direction = commandObject['direction']
                 
                 threads['steppers'][axis]['alive'] = True
+                threads['steppers'][axis]['currentDirection'] = commandObject['direction']
                 
                 t = threading.Thread(target=stepper, args=(axis, direction))
                 
                 threads['steppers'][axis]['threadObject'] = t
                 t.start()
 
-            elif not commandObject['start']:
+
+
+            elif not commandObject['start'] and threads['steppers'][axis]['currentDirection'] == commandObject['direction']:
 
                 threads['steppers'][axis]['alive'] = False
                 threads['steppers'][axis]['threadObject'] = None
+                threads['steppers'][axis]['currentDirection'] = None
 
         elif command == "fire":
             fire()
@@ -88,9 +95,15 @@ class WebSocket(tornado.websocket.WebSocketHandler):
 
 
 
+class IndexHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render("cannon.html")
+
+
 if __name__ == "__main__":
     
     handlers = [
+        (r"/", IndexHandler),
         (r"/static/(.*)", tornado.web.StaticFileHandler, {'path': "./"}),
         (r"/websocket", WebSocket)
     ]
