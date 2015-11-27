@@ -35,6 +35,12 @@
     bottom: 25px;
 }
 
+#logout {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+}
+
 #feed {
     position: absolute;
     left: 25px;
@@ -88,7 +94,7 @@
 }*/
 
 /* label focus color */
-
+/*
 .input-field input[type=text]:focus + label {
     color: yellow;
 }
@@ -103,6 +109,10 @@
 
 .input-field .prefix.active {
     color: yellow;
+}*/
+
+span {
+    color: white;
 }
 
 html {

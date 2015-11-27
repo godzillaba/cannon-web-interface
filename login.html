@@ -1,0 +1,105 @@
+<html>
+
+<head>
+    <title>Cannon Web Login</title>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css" media="screen,projection" />
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link type="text/css" rel="stylesheet" href="/static/css/style.css">
+
+    <style type="text/css">
+        #formCard {
+            width: 65%;
+            height: 65%;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+        h4 {
+            color: white;
+        }
+
+        #submitButton {
+            position: absolute;
+            opacity: 0;
+        }
+
+        /* label color */
+        .input-field label {
+            color: white;
+        }
+        /* label focus color */
+        .input-field input[type=password]:focus + label {
+            color: #f44336;
+        }
+        /* label underline focus color */
+        .input-field input[type=password]:focus {
+            border-bottom: 1px solid #f44336;
+            box-shadow: 0 1px 0 0 #f44336;
+        }
+
+        /* icon prefix focus color */
+        .input-field .prefix.active {
+            color: #f44336;
+        }
+    </style>
+
+
+</head>
+
+
+<body class="grey darken-4">
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+
+    <main>
+
+        <div style="margin-top: 8%"><h4 class="center-align">Remote Senry Login</h4></div>
+        <form action="/login" method="post" style="margin: 0px">
+            <div id='formCard' class="card grey darken-3">
+                <div class="card-content white-text">
+                    <div id='mainRow' class="row" style="margin-bottom: 0px">
+                        <div class="input-field col s12">
+                            <input id="passwordField" placeholder='' name='password' type="password">
+                            <label for="passwordField">Password</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+
+            <button id='submitButton' type="submit" name="action" class="btn-floating btn-large waves-effect waves-light red">
+                <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+        
+        </form>
+
+        <script type="text/javascript">
+        $(window).load(function(){
+            var fc = $("#formCard")
+            var s = $("#submitButton")
+
+            fc.height($("#mainRow").height()+40)
+
+            var coords = fc.offset()
+
+            coords.left += fc.width()*1.03
+            coords.top += (fc.height()-s.height())/2
+
+            s.offset(coords)
+            s.css('opacity', 1)
+
+        })
+        </script>
+    </main>
+</body>
+
+</html>

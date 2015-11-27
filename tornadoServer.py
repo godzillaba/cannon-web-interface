@@ -88,25 +88,58 @@ class WebSocket(tornado.websocket.WebSocketHandler):
             load()
 
 
-
         # echo back message verbatim
         self.write_message(message)
 
 
 
 
-class IndexHandler(tornado.web.RequestHandler):
+# http handling stuff
+
+class BaseHandler(tornado.web.RequestHandler):
+    def get_current_user(self):
+        return self.get_secure_cookie("CannonWebAuth")
+
+class MainHandler(BaseHandler):
     def get(self):
+        
+        if not self.current_user:
+            self.redirect("/login")
+            return
+        
+        currentPassword = tornado.escape.xhtml_escape(self.current_user)
+        
+        if currentPassword != PASSWORD:
+            self.redirect("/login")
+            return
+
         self.render("cannon.html")
+
+class LoginHandler(BaseHandler):
+    def get(self):
+        self.render("login.html")
+
+    def post(self):
+        self.set_secure_cookie("CannonWebAuth", self.get_argument("password"))
+        self.redirect("/")
+
+class LogoutHandler(BaseHandler):
+    def get(self):
+        self.clear_cookie("CannonWebAuth")
+        self.redirect("/")
 
 
 if __name__ == "__main__":
     
+    PASSWORD = "password"
+
     handlers = [
-        (r"/", IndexHandler),
+        (r"/", MainHandler),
+        (r"/login", LoginHandler),
+        (r"/logout", LogoutHandler),
         (r"/static/(.*)", tornado.web.StaticFileHandler, {'path': "./"}),
         (r"/websocket", WebSocket)
     ]
-    application = tornado.web.Application(handlers)
+    application = tornado.web.Application(handlers, cookie_secret=PASSWORD)
     application.listen(8888)
     tornado.ioloop.IOLoop.current().start()
