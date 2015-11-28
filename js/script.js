@@ -101,7 +101,7 @@ var actionButtonPressed = function (key) {
             msg.start = true
             break;
         
-        case "r":
+        case "z":
         case "space":
             msg = key.message
             break;
