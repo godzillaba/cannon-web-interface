@@ -73,8 +73,8 @@ var keyMap = {
             "command": "fire"
         }
     },
-    82: {
-        "character": "r",
+    90: {
+        "character": "z",
         "pressed": false,
         "message": {
             "command": "reload"

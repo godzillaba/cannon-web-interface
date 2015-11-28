@@ -96,6 +96,9 @@ class WebSocket(tornado.websocket.WebSocketHandler):
 
 # http handling stuff
 
+def get_client_ip(self):
+    return repr(self.request).split("remote_ip='")[1].split("'")[0]
+
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
         return self.get_secure_cookie("CannonWebAuth")
@@ -104,12 +107,14 @@ class MainHandler(BaseHandler):
     def get(self):
         
         if not self.current_user:
+            print "%s -- GET / -- (cookie not found, redirecting to /login)" % get_client_ip(self)
             self.redirect("/login")
             return
         
         currentPassword = tornado.escape.xhtml_escape(self.current_user)
         
         if currentPassword != PASSWORD:
+            print "%s -- GET / -- (incorrect password, redirecting to /login)" % get_client_ip(self)
             self.redirect("/login")
             return
 
@@ -117,14 +122,17 @@ class MainHandler(BaseHandler):
 
 class LoginHandler(BaseHandler):
     def get(self):
+        print "%s -- GET /login" % get_client_ip(self)
         self.render("login.html")
 
     def post(self):
+        print "%s -- POST /login" % get_client_ip(self)
         self.set_secure_cookie("CannonWebAuth", self.get_argument("password"))
         self.redirect("/")
 
 class LogoutHandler(BaseHandler):
     def get(self):
+        print "%s -- GET /logout -- (clearing cookie)" % get_client_ip(self)
         self.clear_cookie("CannonWebAuth")
         self.redirect("/")
 
@@ -132,6 +140,7 @@ class LogoutHandler(BaseHandler):
 if __name__ == "__main__":
     
     PASSWORD = "password"
+    PORT = 8888
 
     handlers = [
         (r"/", MainHandler),
@@ -141,5 +150,5 @@ if __name__ == "__main__":
         (r"/websocket", WebSocket)
     ]
     application = tornado.web.Application(handlers, cookie_secret=PASSWORD)
-    application.listen(8888)
+    application.listen(PORT)
     tornado.ioloop.IOLoop.current().start()
