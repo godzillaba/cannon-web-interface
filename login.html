@@ -20,6 +20,7 @@
             left: 0;
             right: 0;
             margin: auto;
+            opacity: 0;
         }
         h4 {
             color: white;
@@ -35,11 +36,11 @@
             color: white;
         }
         /* label focus color */
-        .input-field input[type=password]:focus + label {
+        .input-field input[type=password]:focus + label, .input-field input[type=text]:focus + label{
             color: #f44336;
         }
         /* label underline focus color */
-        .input-field input[type=password]:focus {
+        .input-field input[type=password]:focus, .input-field input[type=text]:focus {
             border-bottom: 1px solid #f44336;
             box-shadow: 0 1px 0 0 #f44336;
         }
@@ -67,7 +68,11 @@
                 <div class="card-content white-text">
                     <div id='mainRow' class="row" style="margin-bottom: 0px">
                         <div class="input-field col s12">
-                            <input id="passwordField" placeholder='' name='password' type="password">
+                            <input id="usernameField" name='username' type="text" placeholder='' value="{{ user }}">
+                            <label for="usernameField">Username</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="passwordField" name='password' type="password" placeholder=''>
                             <label for="passwordField">Password</label>
                         </div>
                     </div>
@@ -95,8 +100,8 @@
             coords.top += (fc.height()-s.height())/2
 
             s.offset(coords)
-            s.css('opacity', 1)
-
+            s.css("opacity", 1)
+            fc.css("opacity", 1)
         })
         </script>
     </main>

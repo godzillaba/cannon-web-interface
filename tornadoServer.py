@@ -101,39 +101,57 @@ def get_client_ip(self):
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
-        return self.get_secure_cookie("CannonWebAuth")
+        return {
+            "username": self.get_secure_cookie("CannonWebAuth_user"), 
+            "password": self.get_secure_cookie("CannonWebAuth_password")
+        }
 
 class MainHandler(BaseHandler):
     def get(self):
         
-        if not self.current_user:
-            print "%s -- GET / -- (cookie not found, redirecting to /login)" % get_client_ip(self)
+        if not self.current_user['username'] or not self.current_user['password']:
+            print "%s -- GET / -- (cookies not found, redirecting to /login)" % get_client_ip(self)
             self.redirect("/login")
             return
         
-        currentPassword = tornado.escape.xhtml_escape(self.current_user)
+        currentUsername = tornado.escape.xhtml_escape(self.current_user['username'])
+        currentPassword = tornado.escape.xhtml_escape(self.current_user['password'])
         
-        if currentPassword != PASSWORD:
+        if currentUsername in users and users[currentUsername] == currentPassword:
+            print "%s -- GET / --" % get_client_ip(self)
+            self.render("cannon.html", user=currentUsername)
+
+        else:
             print "%s -- GET / -- (incorrect password, redirecting to /login)" % get_client_ip(self)
             self.redirect("/login")
             return
 
-        self.render("cannon.html")
 
 class LoginHandler(BaseHandler):
     def get(self):
         print "%s -- GET /login" % get_client_ip(self)
-        self.render("login.html")
+        
+        if self.current_user and self.current_user['username']:
+            user = self.current_user['username']
+        else:
+            user = ""
+
+        self.render("login.html", user=user)
 
     def post(self):
         print "%s -- POST /login" % get_client_ip(self)
-        self.set_secure_cookie("CannonWebAuth", self.get_argument("password"))
+        self.set_secure_cookie("CannonWebAuth_user", self.get_argument("username"))
+        self.set_secure_cookie("CannonWebAuth_password", self.get_argument("password"))
+
+        print "%s logged in" % self.current_user['username']
         self.redirect("/")
 
 class LogoutHandler(BaseHandler):
     def get(self):
         print "%s -- GET /logout -- (clearing cookie)" % get_client_ip(self)
-        self.clear_cookie("CannonWebAuth")
+        
+        print "%s logged out" % self.current_user['username']
+        self.clear_cookie("CannonWebAuth_password")
         self.redirect("/")
 
 
@@ -141,6 +159,11 @@ if __name__ == "__main__":
     
     PASSWORD = "password"
     PORT = 8888
+
+    users = {
+        "admin": "pwd",
+        "henry": "ppp"
+    }
 
     handlers = [
         (r"/", MainHandler),

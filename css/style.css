@@ -41,6 +41,11 @@
     right: 25px;
 }
 
+#user {
+    display: inline;
+    margin-right: 10px;
+}
+
 #feed {
     position: absolute;
     left: 25px;
