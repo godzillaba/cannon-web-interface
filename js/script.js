@@ -45,7 +45,7 @@ var keyMap = {
         "message": {
             "command": "stepper",
             "axis": "y",
-            "direction": -1
+            "direction": 0
         }
     },
     37: {
@@ -54,7 +54,7 @@ var keyMap = {
         "message": {
             "command": "stepper",
             "axis": "x",
-            "direction": -1
+            "direction": 0
         }
     },
     39: {

@@ -2,6 +2,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 import os, json, time, threading
+import RPi.GPIO as GPIO
 
 
 
@@ -21,18 +22,34 @@ threads = {
     }
 }
 
+pins = {
+    "y": {
+        "pulse": 40,
+        "direction": 38,
+        "enable": 36
+    }
+}
 
+def stepper(axis, direction):    
+    delay = .02
 
+    pulsePin = pins[axis]['pulse']
+    directionPin = pins[axis]['direction']
+    enablePin = pins[axis]['enable']
 
-def stepper(axis, direction):
-    print "stepper: %s %s STARTING" % (axis, str(direction))
-    
+    GPIO.output(enablePin, True)
+    GPIO.output(directionPin, direction)
+
     while threads["steppers"][axis]['alive'] == True:
+        GPIO.output(pulsePin, False)
+        time.sleep(delay)
         
-        # stepper code here
-        time.sleep(.2)
+        GPIO.output(pulsePin, True)
+        time.sleep(delay)
 
-    print "stepper: %s %s STOPPING" % (axis, str(direction))
+
+    GPIO.output(enablePin, False)
+
 
 def fire():
     print "Firing cannon!!!"
@@ -157,6 +174,14 @@ class LogoutHandler(BaseHandler):
 
 if __name__ == "__main__":
     
+    GPIO.setmode(GPIO.BOARD)
+
+    for axis in pins:
+        for pin in pins[axis]:
+            GPIO.setup(pins[axis][pin], GPIO.OUT)
+            GPIO.output(pins[axis][pin], False)
+
+
     PASSWORD = "password"
     PORT = 8888
 
