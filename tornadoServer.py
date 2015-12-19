@@ -27,11 +27,13 @@ pins = {
         "pulse": 40,
         "direction": 38,
         "enable": 36
-    }
+    },
+    "fire": 32,
+    "reload": 29
 }
 
 def stepper(axis, direction):    
-    delay = .02
+    delay = .01
 
     pulsePin = pins[axis]['pulse']
     directionPin = pins[axis]['direction']
@@ -53,10 +55,16 @@ def stepper(axis, direction):
 
 def fire():
     print "Firing cannon!!!"
+    GPIO.output(pins['fire'], 0)
+    time.sleep(.5)
+    GPIO.output(pins['fire'], 1)
+
 
 def load():
     print "Reloading cannon!!!"
-
+    GPIO.output(pins['reload'], 0)
+    time.sleep(4)
+    GPIO.output(pins['reload'], 1)
 
 
 class WebSocket(tornado.websocket.WebSocketHandler):
@@ -176,10 +184,13 @@ if __name__ == "__main__":
     
     GPIO.setmode(GPIO.BOARD)
 
-    for axis in pins:
-        for pin in pins[axis]:
-            GPIO.setup(pins[axis][pin], GPIO.OUT)
-            GPIO.output(pins[axis][pin], False)
+    for key in pins:
+        if type(pins[key]) is dict:
+            for pin in pins[key]:
+                GPIO.setup(pins[key][pin], GPIO.OUT)
+                GPIO.output(pins[key][pin], False)
+        else:
+            GPIO.setup(pins[key], GPIO.OUT)
 
 
     PASSWORD = "password"
