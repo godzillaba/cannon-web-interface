@@ -14,6 +14,12 @@ window.onload = function() {
     
     socket.onmessage = function(e) {
         console.log("Text message received: " + e.data);
+        messageObject = JSON.parse(e.data)
+        if (messageObject.update) {
+            if (messageObject.action == "fire_reload" && messageObject.info == "complete"){
+                $("#space, #z").removeClass("btn_disabled")
+            }
+        }
     }
     
     socket.onclose = function(e) {
@@ -92,22 +98,27 @@ var actionButtonPressed = function (key) {
     
     var msg = null
     
-    switch (key.character) {
-        case "up":
-        case "down":
-        case "left":
-        case "right":
-            msg = key.message
-            msg.start = true
-            break;
-        
-        case "z":
-        case "space":
-            msg = key.message
-            break;
+    if ($("#" + key.character).hasClass("btn_disabled")){
+        console.log('wait')
+    } else {
+        switch (key.character) {
+            case "up":
+            case "down":
+            case "left":
+            case "right":
+                msg = key.message
+                msg.start = true
+                break;
+            
+            case "z":
+            case "space":
+                msg = key.message
+                $("#z, #space").addClass("btn_disabled")
+                break;
 
+        }
+        socket.send(JSON.stringify(msg))
     }
-    socket.send(JSON.stringify(msg))
 }
 
 var actionButtonReleased = function (key) {
@@ -151,10 +162,10 @@ var P = {
 var calculatePhysics = function () {
     var returnData = new Object();
     
-    // find force from pressure somehow (defining it in P for now...)
-    returnData.force = Math.round((0.2005*P.pressure - 0.3479)*100) / 100
+    // find energy from pressure somehow (defining it in P for now...)
+    returnData.energy = Math.round((0.2005*P.pressure - 0.3479)*100) / 100
 
-    returnData.velocity = Math.round((Math.sqrt((2*P.barrelLength*returnData.force)/P.projectileMass)) * 100) / 100
+    returnData.velocity = Math.round((Math.sqrt((2*P.barrelLength*returnData.energy)/P.projectileMass)) * 100) / 100
 
     returnData.airTime = Math.round((returnData.velocity * Math.sin(toRadians(P.theta)) / 4.9) * 100) / 100
 
@@ -164,7 +175,7 @@ var calculatePhysics = function () {
     $("#pressure").html(P.pressure)
     $("#theta").html(P.theta)
     
-    $("#force").html(returnData.force)
+    $("#energy").html(returnData.energy)
     $("#velocity").html(returnData.velocity)
     $("#time").html(returnData.airTime)
     $("#predictedDistance").html(returnData.distance)

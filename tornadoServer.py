@@ -108,9 +108,11 @@ class WebSocket(tornado.websocket.WebSocketHandler):
 
         elif command == "fire":
             fire()
+            self.write_message('{"update":true, "action": "fire_reload", "info": "complete"}')
 
         elif command == "reload":
             load()
+            self.write_message('{"update":true, "action": "fire_reload", "info": "complete"}')
 
 
         # echo back message verbatim

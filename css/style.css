@@ -123,3 +123,7 @@ span {
 html {
     color: white;
 }
+
+.btn_disabled {
+    opacity: .2 !important;
+}
